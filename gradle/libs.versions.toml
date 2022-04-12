@@ -1,0 +1,49 @@
+[versions]
+
+# App
+app-versionCode = "1"
+app-versionName = "1.0"
+
+# Android SDK
+android-compileSdk = "31"
+android-gradlePlugin = "7.1.1"
+android-minSdk = "26"
+android-targetSdk = "31"
+
+# AndroidX / Jetpack
+androidx-activity = "1.4.0"
+
+# Other dependencies
+compose = "1.1.0"
+kotlin = "1.6.10"
+versionsPlugin = "0.42.0"
+
+##################################################################################################################################
+
+[libraries]
+
+# Gradle Plugins
+gradle-android = { module = "com.android.tools.build:gradle", version.ref = "android-gradlePlugin" }
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# AndroidX / Jetpack
+androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+
+# Compose
+compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+
+##################################################################################################################################
+
+[bundles]
+
+compose = [
+    "compose-animation",
+    "compose-activity",
+    "compose-foundation",
+    "compose-material",
+    "compose-ui"
+]
