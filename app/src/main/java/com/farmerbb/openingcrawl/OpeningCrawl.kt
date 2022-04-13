@@ -18,7 +18,11 @@ package com.farmerbb.openingcrawl
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,8 +43,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 
 data class CrawlData(
     val episodeNumber: Int,
@@ -95,6 +98,10 @@ fun Int.asRomanNumeral(): String {
     return ""
 }
 
+enum class LogoState {
+    Initial, Shrinking, Fading
+}
+
 @ExperimentalAnimationApi
 @Composable
 fun OpeningCrawl(
@@ -113,21 +120,27 @@ fun OpeningCrawl(
         append("...")
     }
 
-    var logoVisible by remember { mutableStateOf(true) }
+    var logoState by remember { mutableStateOf(LogoState.Initial) }
     val scrollState = rememberScrollState()
 
-    val density = LocalDensity.current.density
-    var boxHeight by remember { mutableStateOf(0.dp) }
-    var boxWidth by remember { mutableStateOf(0.dp) }
-
-    Box(
-        modifier = Modifier
-            .background(color = Color.Black)
-            .onGloballyPositioned { coordinates ->
-                boxHeight = (coordinates.size.height / density).dp
-                boxWidth = (coordinates.size.width / density).dp
-            }
+    BoxWithConstraints(
+        modifier = Modifier.background(color = Color.Black)
     ) {
+        val transition = updateTransition(logoState, label = "Star Wars logo visibility")
+        val logoWidth by transition.animateDp(label = "Star Wars logo width", transitionSpec = {
+            tween(
+                durationMillis = 5000,
+                easing = LinearOutSlowInEasing
+            )
+        }) { state ->
+            maxWidth * when (state) {
+                LogoState.Initial -> 1f
+                else -> 0.1f
+            }
+        }
+
+        val maxHeight = maxHeight
+
         Scaffold(
             modifier = Modifier.graphicsLayer {
                 rotationX = 40f
@@ -140,7 +153,7 @@ fun OpeningCrawl(
                             state = scrollState
                         )
                 ) {
-                    Spacer(modifier = Modifier.height(boxHeight))
+                    Spacer(modifier = Modifier.height(maxHeight))
 
                     Text(
                         text = crawlHeader,
@@ -170,16 +183,16 @@ fun OpeningCrawl(
                             .fillMaxHeight()
                     )
 
-                    Spacer(modifier = Modifier.height(boxHeight))
+                    Spacer(modifier = Modifier.height(maxHeight))
                 }
             }
         )
 
         AnimatedVisibility(
-            visible = logoVisible,
+            visible = logoState != LogoState.Fading,
             exit = fadeOut(
                 animationSpec = TweenSpec(
-                    durationMillis = 5000
+                    durationMillis = 500
                 )
             ),
             modifier = Modifier
@@ -190,12 +203,13 @@ fun OpeningCrawl(
                 painter = logoPainter,
                 colorFilter = ColorFilter.tint(color = colorResource(R.color.star_wars_logo)),
                 contentDescription = "Star Wars logo",
+                modifier = Modifier.width(logoWidth)
             )
         }
     }
 
     LaunchedEffect(Unit) {
-        logoVisible = false
+        logoState = LogoState.Shrinking
         scrollState.animateScrollTo(
             value = 10000,
             animationSpec = TweenSpec(
@@ -203,5 +217,10 @@ fun OpeningCrawl(
                 easing = LinearEasing
             )
         )
+    }
+
+    LaunchedEffect(Unit) {
+        delay(5000)
+        logoState = LogoState.Fading
     }
 }
