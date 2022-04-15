@@ -55,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
@@ -116,8 +117,7 @@ enum class LogoState {
 @Composable
 fun OpeningCrawl(
     logoPainter: Painter = defaultLogoPainter(),
-    crawlData: CrawlData = defaultCrawlData,
-    numberOfStars: Int = 30
+    crawlData: CrawlData = defaultCrawlData
 ) = with(crawlData) {
     val crawlHeaderTop = "Episode ${episodeNumber.asRomanNumeral()}\n"
     val crawlHeaderBottom = "${episodeTitle.uppercase()}\n"
@@ -158,6 +158,7 @@ fun OpeningCrawl(
 
         val seed by remember { mutableStateOf(Random.nextInt()) }
         val random = Random(seed)
+        val numberOfStars = ((maxWidth.value * maxHeight.value) / 10000).roundToInt()
 
         for (i in 0..numberOfStars) {
             Box(

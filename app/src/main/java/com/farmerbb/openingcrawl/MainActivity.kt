@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.farmerbb.openingcrawl
 
 import android.os.Bundle
@@ -20,12 +22,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.MaterialTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-@OptIn(ExperimentalAnimationApi::class)
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val systemUiController = rememberSystemUiController()
+            systemUiController.isSystemBarsVisible = false
+
             MaterialTheme {
                 OpeningCrawl()
             }

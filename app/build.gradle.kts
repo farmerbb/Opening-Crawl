@@ -91,4 +91,5 @@ android {
 dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.bundles.compose)
+    implementation(libs.systemuicontroller)
 }

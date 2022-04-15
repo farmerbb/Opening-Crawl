@@ -14,6 +14,7 @@ android-targetSdk = "31"
 androidx-activity = "1.4.0"
 
 # Other dependencies
+accompanist = "0.23.0"
 compose = "1.1.0"
 kotlin = "1.6.10"
 versionsPlugin = "0.42.0"
@@ -35,6 +36,9 @@ compose-activity = { module = "androidx.activity:activity-compose", version.ref 
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+
+# Other dependencies
+systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 ##################################################################################################################################
 

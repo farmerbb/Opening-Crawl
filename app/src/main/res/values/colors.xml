@@ -15,7 +15,6 @@
 -->
 
 <resources>
-    <color name="colorPrimary">#000000</color>
     <color name="ic_launcher_adaptive_bg">#000000</color>
     <color name="star_wars_logo">#FFC500</color>
 </resources>
