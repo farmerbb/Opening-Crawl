@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalTime::class)
+
 package com.farmerbb.openingcrawl
 
 import androidx.compose.animation.AnimatedVisibility
@@ -48,9 +50,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
 data class CrawlData(
     val episodeNumber: Int,
@@ -70,6 +73,9 @@ private val defaultCrawlData = CrawlData(
         "Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, custodian of the stolen plans that can save her people and restore freedom to the galaxy."
     )
 )
+
+private const val logoShrinkDuration = 5000
+private const val logoFadeDuration = 500
 
 // Based on https://github.com/luisrovirosa/roman-numerals-kotlin/blob/master/src/main/java/RomanNumerals.kt
 fun Int.asRomanNumeral(): String {
@@ -126,10 +132,15 @@ fun OpeningCrawl(
     BoxWithConstraints(
         modifier = Modifier.background(color = Color.Black)
     ) {
+        val maxHeight = maxHeight
+        val maxWidth = maxWidth
+        val fontSize = (maxWidth.value / 14).sp
+        val horizontalPadding = maxWidth / 48
+
         val transition = updateTransition(logoState, label = "Star Wars logo visibility")
         val logoWidth by transition.animateDp(label = "Star Wars logo width", transitionSpec = {
             tween(
-                durationMillis = 5000,
+                durationMillis = logoShrinkDuration,
                 easing = LinearOutSlowInEasing
             )
         }) { state ->
@@ -138,8 +149,6 @@ fun OpeningCrawl(
                 else -> 0.1f
             }
         }
-
-        val maxHeight = maxHeight
 
         Scaffold(
             modifier = Modifier.graphicsLayer {
@@ -159,11 +168,12 @@ fun OpeningCrawl(
                         text = crawlHeader,
                         style = TextStyle(
                             color = colorResource(R.color.star_wars_logo),
-                            fontSize = 28.sp,
+                            fontSize = fontSize,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         ),
                         modifier = Modifier
+                            .padding(horizontal = horizontalPadding)
                             .fillMaxWidth()
                     )
 
@@ -171,14 +181,12 @@ fun OpeningCrawl(
                         text = crawlTextAsString,
                         style = TextStyle(
                             color = colorResource(R.color.star_wars_logo),
-                            fontSize = 28.sp,
+                            fontSize = fontSize,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Justify
                         ),
                         modifier = Modifier
-                            .padding(
-                                start = 16.dp
-                            )
+                            .padding(horizontal = horizontalPadding)
                             .fillMaxWidth()
                             .fillMaxHeight()
                     )
@@ -192,12 +200,10 @@ fun OpeningCrawl(
             visible = logoState != LogoState.Fading,
             exit = fadeOut(
                 animationSpec = TweenSpec(
-                    durationMillis = 500
+                    durationMillis = logoFadeDuration
                 )
             ),
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(16.dp)
+            modifier = Modifier.align(Alignment.Center)
         ) {
             Image(
                 painter = logoPainter,
@@ -208,19 +214,21 @@ fun OpeningCrawl(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(scrollState.maxValue) {
         logoState = LogoState.Shrinking
-        scrollState.animateScrollTo(
-            value = 10000,
-            animationSpec = TweenSpec(
-                durationMillis = 100000,
-                easing = LinearEasing
+        with(scrollState) {
+            animateScrollTo(
+                value = maxValue,
+                animationSpec = TweenSpec(
+                    durationMillis = maxValue * 10,
+                    easing = LinearEasing
+                )
             )
-        )
+        }
     }
 
     LaunchedEffect(Unit) {
-        delay(5000)
+        delay(logoShrinkDuration.milliseconds)
         logoState = LogoState.Fading
     }
 }
