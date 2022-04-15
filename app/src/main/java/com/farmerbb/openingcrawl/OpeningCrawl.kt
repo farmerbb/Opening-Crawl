@@ -114,7 +114,8 @@ fun OpeningCrawl(
     logoPainter: Painter = defaultLogoPainter(),
     crawlData: CrawlData = defaultCrawlData
 ) = with(crawlData) {
-    val crawlHeader = "Episode ${episodeNumber.asRomanNumeral()}\n${episodeTitle.uppercase()}\n"
+    val crawlHeaderTop = "Episode ${episodeNumber.asRomanNumeral()}\n"
+    val crawlHeaderBottom = "${episodeTitle.uppercase()}\n"
     val crawlTextAsString = buildString {
         crawlText.forEachIndexed { index, string ->
             append(string)
@@ -151,21 +152,18 @@ fun OpeningCrawl(
         }
 
         Surface(
+            color = Color.Transparent,
             modifier = Modifier.graphicsLayer {
                 rotationX = 40f
             },
             content = {
                 Column(
-                    modifier = Modifier
-                        .background(color = Color.Black)
-                        .verticalScroll(
-                            state = scrollState
-                        )
+                    modifier = Modifier.verticalScroll(state = scrollState)
                 ) {
                     Spacer(modifier = Modifier.height(maxHeight))
 
                     Text(
-                        text = crawlHeader,
+                        text = crawlHeaderTop,
                         style = TextStyle(
                             color = colorResource(R.color.star_wars_logo),
                             fontSize = fontSize,
@@ -173,6 +171,23 @@ fun OpeningCrawl(
                             textAlign = TextAlign.Center
                         ),
                         modifier = Modifier
+                            .padding(horizontal = horizontalPadding)
+                            .fillMaxWidth()
+                    )
+
+                    Text(
+                        text = crawlHeaderBottom,
+                        style = TextStyle(
+                            color = colorResource(R.color.star_wars_logo),
+                            fontSize = fontSize,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        ),
+                        modifier = Modifier
+                            .graphicsLayer {
+                                scaleX = 1.2f
+                                scaleY = 2f
+                            }
                             .padding(horizontal = horizontalPadding)
                             .fillMaxWidth()
                     )
