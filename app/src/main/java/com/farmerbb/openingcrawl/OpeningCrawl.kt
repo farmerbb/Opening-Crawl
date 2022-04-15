@@ -30,6 +30,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -41,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -50,8 +52,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 
@@ -112,7 +116,8 @@ enum class LogoState {
 @Composable
 fun OpeningCrawl(
     logoPainter: Painter = defaultLogoPainter(),
-    crawlData: CrawlData = defaultCrawlData
+    crawlData: CrawlData = defaultCrawlData,
+    numberOfStars: Int = 30
 ) = with(crawlData) {
     val crawlHeaderTop = "Episode ${episodeNumber.asRomanNumeral()}\n"
     val crawlHeaderBottom = "${episodeTitle.uppercase()}\n"
@@ -149,6 +154,22 @@ fun OpeningCrawl(
                 LogoState.Initial -> 1f
                 else -> 0.1f
             }
+        }
+
+        val seed by remember { mutableStateOf(Random.nextInt()) }
+        val random = Random(seed)
+
+        for (i in 0..numberOfStars) {
+            Box(
+                modifier = Modifier
+                    .size((random.nextFloat() * 4).dp)
+                    .offset(
+                        x = maxWidth * random.nextFloat(),
+                        y = maxHeight * random.nextFloat(),
+                    )
+                    .clip(CircleShape)
+                    .background(Color.White)
+            )
         }
 
         Surface(
