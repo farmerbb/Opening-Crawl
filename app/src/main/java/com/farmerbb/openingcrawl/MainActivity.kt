@@ -18,6 +18,7 @@
 package com.farmerbb.openingcrawl
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -27,6 +28,11 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+
         setContent {
             val systemUiController = rememberSystemUiController()
             systemUiController.isSystemBarsVisible = false

@@ -163,7 +163,7 @@ fun OpeningCrawl(
         for (i in 0..numberOfStars) {
             Box(
                 modifier = Modifier
-                    .size((random.nextFloat() * 4).dp)
+                    .size((random.nextFloat() * 2.5).dp)
                     .offset(
                         x = maxWidth * random.nextFloat(),
                         y = maxHeight * random.nextFloat(),
