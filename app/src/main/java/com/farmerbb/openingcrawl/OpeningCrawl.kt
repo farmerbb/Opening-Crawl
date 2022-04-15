@@ -74,7 +74,7 @@ private val defaultCrawlData = CrawlData(
     )
 )
 
-private const val logoShrinkDuration = 5000
+private const val logoShrinkDuration = 7000
 private const val logoFadeDuration = 500
 
 // Based on https://github.com/luisrovirosa/roman-numerals-kotlin/blob/master/src/main/java/RomanNumerals.kt
@@ -134,8 +134,8 @@ fun OpeningCrawl(
     ) {
         val maxHeight = maxHeight
         val maxWidth = maxWidth
-        val fontSize = (maxWidth.value / 14).sp
-        val horizontalPadding = maxWidth / 48
+        val fontSize = (maxWidth.value / 26).sp
+        val horizontalPadding = maxWidth / 4
 
         val transition = updateTransition(logoState, label = "Star Wars logo visibility")
         val logoWidth by transition.animateDp(label = "Star Wars logo width", transitionSpec = {
@@ -214,13 +214,13 @@ fun OpeningCrawl(
         }
     }
 
-    LaunchedEffect(scrollState.maxValue) {
+    LaunchedEffect(Unit) {
         logoState = LogoState.Shrinking
         with(scrollState) {
             animateScrollTo(
                 value = maxValue,
                 animationSpec = TweenSpec(
-                    durationMillis = maxValue * 10,
+                    durationMillis = maxValue * 20,
                     easing = LinearEasing
                 )
             )
