@@ -47,8 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -66,9 +64,6 @@ data class CrawlData(
     val crawlText: List<String>
 )
 
-@Composable
-private fun defaultLogoPainter() = painterResource(id = R.drawable.star_wars_logo)
-
 private val defaultCrawlData = CrawlData(
     episodeNumber = 4,
     episodeTitle = "A New Hope",
@@ -79,6 +74,7 @@ private val defaultCrawlData = CrawlData(
     )
 )
 
+private val starWarsLogoColor = Color(0xFFFFC500)
 private const val logoShrinkDuration = 7000
 private const val logoFadeDuration = 500
 
@@ -116,7 +112,7 @@ enum class LogoState {
 @ExperimentalAnimationApi
 @Composable
 fun OpeningCrawl(
-    logoPainter: Painter = defaultLogoPainter(),
+    logoPainter: Painter = starWarsLogoPainter(),
     crawlData: CrawlData = defaultCrawlData
 ) = with(crawlData) {
     val crawlHeaderTop = "Episode ${episodeNumber.asRomanNumeral()}\n"
@@ -187,7 +183,7 @@ fun OpeningCrawl(
                     Text(
                         text = crawlHeaderTop,
                         style = TextStyle(
-                            color = colorResource(R.color.star_wars_logo),
+                            color = starWarsLogoColor,
                             fontSize = fontSize,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
@@ -200,7 +196,7 @@ fun OpeningCrawl(
                     Text(
                         text = crawlHeaderBottom,
                         style = TextStyle(
-                            color = colorResource(R.color.star_wars_logo),
+                            color = starWarsLogoColor,
                             fontSize = fontSize,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
@@ -217,7 +213,7 @@ fun OpeningCrawl(
                     Text(
                         text = crawlTextAsString,
                         style = TextStyle(
-                            color = colorResource(R.color.star_wars_logo),
+                            color = starWarsLogoColor,
                             fontSize = fontSize,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Justify
@@ -244,7 +240,7 @@ fun OpeningCrawl(
         ) {
             Image(
                 painter = logoPainter,
-                colorFilter = ColorFilter.tint(color = colorResource(R.color.star_wars_logo)),
+                colorFilter = ColorFilter.tint(color = starWarsLogoColor),
                 contentDescription = "Star Wars logo",
                 modifier = Modifier.width(logoWidth)
             )
@@ -269,3 +265,6 @@ fun OpeningCrawl(
         logoState = LogoState.Fading
     }
 }
+
+@Composable
+expect fun starWarsLogoPainter(): Painter

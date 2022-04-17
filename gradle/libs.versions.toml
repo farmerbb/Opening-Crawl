@@ -29,10 +29,10 @@ gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 
 # AndroidX / Jetpack
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 
 # Compose
 compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -44,9 +44,13 @@ systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicont
 
 [bundles]
 
+androidx = [
+    "androidx-activity",
+    "compose-activity"
+]
+
 compose = [
     "compose-animation",
-    "compose-activity",
     "compose-foundation",
     "compose-material",
     "compose-ui"

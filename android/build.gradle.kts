@@ -1,14 +1,10 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-}
-
-repositories {
-    google()
-    mavenCentral()
-    gradlePluginPortal()
+    kotlin("android")
+    id("org.jetbrains.compose") version libs.versions.compose.get()
 }
 
 android {
@@ -34,8 +30,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
@@ -89,7 +85,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.activity)
-    implementation(libs.bundles.compose)
+    implementation(projects.common)
+    implementation(libs.bundles.androidx)
     implementation(libs.systemuicontroller)
 }
