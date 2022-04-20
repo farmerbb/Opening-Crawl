@@ -1,18 +1,45 @@
-plugins {
-    // this is necessary to avoid the plugins to be loaded multiple times
-    // in each subproject's classloader
-    kotlin("jvm") apply false
-    kotlin("multiplatform") apply false
-    kotlin("android") apply false
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    id("org.jetbrains.compose") apply false
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath(libs.gradle.android)
+        classpath(libs.gradle.kotlin)
+    }
 }
 
-subprojects {
+@Suppress("DSL_SCOPE_VIOLATION")
+plugins {
+    id("com.github.ben-manes.versions") version libs.versions.versionsPlugin.get()
+}
+
+allprojects {
     repositories {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
+}
+
+subprojects {
+    afterEvaluate {
+        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
+            ext.sourceSets.removeAll { sourceSet ->
+                setOf(
+                    "androidAndroidTestRelease",
+                    "androidTestFixtures",
+                    "androidTestFixturesDebug",
+                    "androidTestFixturesRelease"
+                ).contains(sourceSet.name)
+            }
+        }
+    }
+}
+
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }

@@ -27,8 +27,8 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "KotlinMultiplatformComposeDesktopApplication"
-            packageVersion = "1.0.0"
+            packageName = "Opening Crawl"
+            packageVersion = libs.versions.app.versionName.get()
         }
     }
 }
