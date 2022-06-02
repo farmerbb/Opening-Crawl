@@ -1,8 +1,8 @@
 [versions]
 
-# App
-app-versionCode = "1"
-app-versionName = "1.0"
+# Opening Crawl
+versionCode = "1"
+versionName = "1.0.0"
 
 # Android SDK
 android-compileSdk = "31"

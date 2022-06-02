@@ -28,7 +28,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Opening Crawl"
-            packageVersion = libs.versions.app.versionName.get()
+            packageVersion = libs.versions.versionName.get()
         }
     }
 }
