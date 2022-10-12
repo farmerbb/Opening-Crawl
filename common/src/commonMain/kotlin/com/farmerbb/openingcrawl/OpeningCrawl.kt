@@ -223,8 +223,7 @@ fun OpeningCrawl(
                         ),
                         modifier = Modifier
                             .padding(horizontal = horizontalPadding)
-                            .fillMaxWidth()
-                            .fillMaxHeight()
+                            .fillMaxSize()
                     )
 
                     Spacer(modifier = Modifier.height(maxHeight))

@@ -5,7 +5,7 @@ versionCode = "1"
 versionName = "1.0.0"
 
 # Android SDK
-android-compileSdk = "31"
+android-compileSdk = "32"
 android-gradlePlugin = "7.1.1"
 android-minSdk = "26"
 android-targetSdk = "31"
@@ -15,8 +15,8 @@ androidx-activity = "1.4.0"
 
 # Other dependencies
 accompanist = "0.23.0"
-compose = "1.1.0"
-kotlin = "1.6.10"
+compose = "1.2.0"
+kotlin = "1.7.20"
 versionsPlugin = "0.42.0"
 
 ##################################################################################################################################
