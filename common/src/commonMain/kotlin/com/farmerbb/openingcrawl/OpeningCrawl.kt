@@ -172,9 +172,6 @@ fun OpeningCrawl(
         Surface(
             color = Color.Transparent,
             modifier = Modifier.graphicsLayer {
-                // Note: not working on multiplatform
-                // https://github.com/JetBrains/compose-jb/issues/1129
-                // https://github.com/JetBrains/skija/issues/67
                 rotationX = 40f
             },
             content = {
